@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class DateTimePanel extends JPanel implements ActionListener {
 
 	private boolean twelveHourClock;
-	private int size, second, minute, hour, dayOfWeek, month, dayOfMonth, year;
+	private int size, second, minute, hour, dayOfMonth, month, year;
 	private String date;
 
 	private Font timeFont, dateFont_small, dateFont_large, alt_timeFont;
@@ -28,18 +28,15 @@ public class DateTimePanel extends JPanel implements ActionListener {
 
 	private Timer timer;
 
-	public DateTimePanel(int[] date, int[] time, int size)
+	public DateTimePanel(String dateString, String timeString, int size)
 	{
 		setLayout(new GridBagLayout());
 		setOpaque(false);
 		this.size 		= size;
-		second 	 		= time[0];
-		minute			= time[1];
-		hour 			= time[2];
-		dayOfWeek 		= date[0];
-		month 			= date[1];
-		dayOfMonth 		= date[2];
-		year 		  	= date[3];
+
+		setTime(timeString);
+		setDate(dateString);
+		
 
 		twelveHourClock = true;
 
@@ -54,7 +51,7 @@ public class DateTimePanel extends JPanel implements ActionListener {
 		timeFields 	= new JTextField[3];
 		am_pm 		= new JTextArea();
 		clockPanel 	= new JPanel();
-		dateLabel 	= new JLabel(TimeSyncLibrary.getDate(dayOfWeek, month, dayOfMonth, year));
+		dateLabel 	= new JLabel(date);
 		timer 		= new Timer(1000, this);
 
 		am_pm.setText(((hour > 12) ? "P" : "A") + "M");
@@ -100,7 +97,7 @@ public class DateTimePanel extends JPanel implements ActionListener {
 
 		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(dateLabel, false);
 
-		dateLabel.setText(TimeSyncLibrary.getDate(dayOfWeek, month, dayOfMonth, year));
+		dateLabel.setText(date);
 		dateLabel.setFont(dateFont_small);
 
 		updateTime();
@@ -114,13 +111,53 @@ public class DateTimePanel extends JPanel implements ActionListener {
 		timer.start();
 	}
 
+	public void setTime(String timeString)
+	{
+		try {
+
+		String[] time = timeString.split(":");
+		hour 	 		= Integer.parseInt(time[0]);
+		minute			= Integer.parseInt(time[1]);
+		second 			= Integer.parseInt(time[2]);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			second 	 		= 0;
+			minute			= 0;
+			hour 			= 0;
+		}
+	}
+
+	public void setDate(String dateString)
+	{
+		date = dateString;
+
+		try {
+			String[] date = dateString.split("/");
+			month 			= Integer.parseInt(date[1]);
+			dayOfMonth 		= Integer.parseInt(date[0]);
+			year 		  	= Integer.parseInt(date[2]);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			month 			= 0;
+			dayOfMonth 		= 0;
+			year 		  	= 0;
+		}
+	}
+
+	public void updateDate() {
+		date = dayOfMonth + "/" + month + "/" + year;
+		dateLabel.setText(date);
+	}
+
 	public void updateTime()
 	{
 		second 	%= 60;
 		minute 	%= 60;
 		hour 	%= 24;
 
-		timeFields[0].setText(TimeSyncLibrary.pad((hour == 0) ? 12 : hour));
+		timeFields[0].setText(TimeSyncLibrary.pad((hour%12 == 0) ? 12 : hour%12));
 		timeFields[1].setText(TimeSyncLibrary.pad(minute));
 		timeFields[2].setText(TimeSyncLibrary.pad(second));
 		am_pm.setText(((hour > 12) ? "P" : "A") + "M");
@@ -140,7 +177,10 @@ public class DateTimePanel extends JPanel implements ActionListener {
 		if (minute == 60)
 			hour++;
 		if (hour == 24)
+		{
 			dayOfMonth++;
+			updateDate();
+		}
 
 		updateTime();
 

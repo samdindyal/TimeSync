@@ -7,21 +7,33 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.KeyboardFocusManager;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyEventPostProcessor;
+import java.awt.event.KeyEvent;
 
 import javax.swing.UIManager;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 
-public class TimeSyncUI implements MouseListener{
+public class TimeSyncUI implements MouseListener, ActionListener, KeyEventDispatcher{
 
 	private Calendar lastSynchronizedCal;
 
-	private JFrame	frame;
-	private JLabel 	title, syncButton, lastSynchronizedDateLabel, lastSynchronizedTimeLabel;
+	private JFrame		frame;
+	private JLabel 		title, syncButton, lastSynchronizedDateLabel, lastSynchronizedTimeLabel;
+	private JMenuBar	menuBar;
+	private JMenuItem 	syncDateMenuItem, syncTimeMenuItem, syncAllMenuItem, toolsMenu, viewMenu, dateAndTimeMenuItem, dateMenuItem, timeMenuItem;
 	
 	private int 	screenWidth, screenHeight;
-	private String 	currentOS;
+	private Color 	glassPaneTest;
+ 	private String[] date, time;
 
 	private TimeSyncRuntime runtime;
 	private DateTimePanel dateTimePanel;
@@ -35,7 +47,6 @@ public class TimeSyncUI implements MouseListener{
 		GraphicsDevice gd 				= GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		screenWidth 					= gd.getDisplayMode().getWidth();
 		screenHeight 					= gd.getDisplayMode().getHeight();
-		currentOS 						= System.getProperty("os.name");
 		GridBagConstraints c 			= new GridBagConstraints();
 		syncButtonColourScheme 			= new ColourScheme(Color.DARK_GRAY, Color.WHITE, "Sync Button Hover Colour Scheme");
 		syncButtonHoverColourScheme 	= new ColourScheme(Color.DARK_GRAY.brighter(), TimeSyncLibrary.GREENACCENT_COLOURSCHEME.getForeground(), "Sync Button Hover Colour Scheme");
@@ -43,12 +54,14 @@ public class TimeSyncUI implements MouseListener{
 		c.gridx = 0;
 		c.gridy = 0;
 		
-		if (currentOS.startsWith("Mac"))
+		if (TimeSyncLibrary.RUNNING_OSX)
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}catch(Exception e){ e.printStackTrace(); }
+
+		glassPaneTest = new Color(0, 0, 0, 0.7f);
 
 		frame = new JFrame(titleBarText);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,12 +86,10 @@ public class TimeSyncUI implements MouseListener{
 		lastSynchronizedDateLabel.setFont(TimeSyncLibrary.CAPTIONFONT);
 		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(lastSynchronizedDateLabel, false);
 
-		lastSynchronizedTimeLabel = new JLabel("<html><i>Last Synchronized: Never</i></html>");
+		lastSynchronizedTimeLabel = new JLabel("");
 		lastSynchronizedTimeLabel.setHorizontalAlignment(JLabel.CENTER);
 		lastSynchronizedTimeLabel.setFont(TimeSyncLibrary.CAPTIONFONT);
 		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(lastSynchronizedTimeLabel, false);
-
-		sync();
 
 		frame.add(title, c);
 
@@ -103,25 +114,85 @@ public class TimeSyncUI implements MouseListener{
 
 		frame.add(lastSynchronizedTimeLabel, c);
 
+		createMenuBar();
 
+		frame.setJMenuBar(menuBar);
+
+
+		sync("DATE_AND_TIME");
 		frame.setSize((int)(screenWidth / 4.5), (int)(screenWidth / 4.5));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 		syncButton.addMouseListener(this);
+
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 	}
 
-	public void sync()
+	private void sync(String str)
 	{
-		lastSynchronizedCal = Calendar.getInstance();
-			lastSynchronizedDateLabel.setText("<html><i>Last Synchronized: <b>" + TimeSyncLibrary.getDate(lastSynchronizedCal.get(Calendar.DAY_OF_WEEK)-1,
-																									lastSynchronizedCal.get(Calendar.MONTH),
-																									lastSynchronizedCal.get(Calendar.DAY_OF_MONTH),
-																									lastSynchronizedCal.get(Calendar.YEAR)) + "<b></i></html>");
-			lastSynchronizedTimeLabel.setText("<html> <i>at<b> "+ TimeSyncLibrary.pad((lastSynchronizedCal.get(Calendar.HOUR) == 0) ? 12 : lastSynchronizedCal.get(Calendar.HOUR)) + ":" 
-																+ TimeSyncLibrary.pad(lastSynchronizedCal.get(Calendar.MINUTE)) + ":" 
-																+ TimeSyncLibrary.pad(lastSynchronizedCal.get(Calendar.SECOND)) 
-																+ ((lastSynchronizedCal.get(Calendar.AM_PM) == Calendar.AM) ? " AM" : " PM")  + "</b></i>.</html>");
+		runtime.sync(str);
+	}
+
+	private void createMenuBar()
+	{
+		menuBar = new JMenuBar();
+
+		// Create tools menu
+		toolsMenu = new JMenu("Tools");
+
+		syncAllMenuItem = new JMenuItem("Sync Date and Time");
+		syncDateMenuItem = new JMenuItem("Sync Date");
+		syncTimeMenuItem = new JMenuItem("Sync Time");
+
+		// Create view menu
+		viewMenu = new JMenu("View");
+
+		dateMenuItem = new JMenuItem("Date");
+		timeMenuItem = new JMenuItem("Time");
+		dateAndTimeMenuItem = new JMenuItem("Date and Time");
+
+		viewMenu.add(dateMenuItem);
+		viewMenu.add(timeMenuItem);
+		viewMenu.add(dateAndTimeMenuItem);
+
+		toolsMenu.add(syncDateMenuItem);
+		toolsMenu.add(syncTimeMenuItem);
+		toolsMenu.add(syncAllMenuItem);
+
+		menuBar.add(viewMenu);
+		menuBar.add(toolsMenu);
+
+		syncAllMenuItem.addActionListener(this);
+		syncDateMenuItem.addActionListener(this);
+		syncTimeMenuItem.addActionListener(this);
+
+		runtime.addActionListener(this);
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e)
+	{
+		return false;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == runtime)
+		{
+			dateTimePanel.setTime(runtime.getTime());
+			dateTimePanel.setDate(runtime.getDate());
+			lastSynchronizedDateLabel.setText("<html><i>Last Synchronized: <b>" + runtime.getDate() + "<b></i></html>");
+			lastSynchronizedTimeLabel.setText("<html> <i>at<b> " + runtime.getTime() + "</b></i>.</html>");
+		}
+		else if (e.getSource() == syncDateMenuItem)
+			sync("DATE");
+		else if (e.getSource() == syncTimeMenuItem)
+			sync("TIME");
+		else if (e.getSource() == syncAllMenuItem)
+			sync("DATE_AND_TIME");
 	}
 	
 	@Override
@@ -142,7 +213,7 @@ public class TimeSyncUI implements MouseListener{
 	public void mousePressed(MouseEvent e)
 	{
 		if (e.getSource() == syncButton)
-			sync();
+			sync("DATE_AND_TIME");
 	}
 	
 	@Override
