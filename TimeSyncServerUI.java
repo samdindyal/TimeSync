@@ -5,18 +5,18 @@
 	Description: A graphical user interface for the server side of TimeSync.
 */
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import java.awt.GraphicsEnvironment;
+import java.awt.Color;
 import java.awt.GraphicsDevice;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.GridBagLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class TimeSyncServerUI implements MouseListener, ActionListener{
 

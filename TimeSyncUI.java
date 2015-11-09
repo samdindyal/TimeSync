@@ -5,28 +5,26 @@
 	Description: A graphical user interface for the client side of TimeSync.
 */
 
-import java.util.Calendar;
-
-import java.awt.GraphicsEnvironment;
-import java.awt.GraphicsDevice;
 import java.awt.Color;
-import java.awt.GridBagLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
+import java.awt.GridBagLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.KeyboardFocusManager;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyEventPostProcessor;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Calendar;
 
-import javax.swing.UIManager;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
 
 
 public class TimeSyncUI implements MouseListener, ActionListener, KeyEventDispatcher{
