@@ -1,3 +1,10 @@
+/**
+	Title: The "DateTimePanel" class
+	Date Written: November 2015
+	Author: Samuel Dindyal, Balin Banh, Danel Tran
+	Description: A time panel which display the date and time.
+*/
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;

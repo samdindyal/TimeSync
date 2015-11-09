@@ -1,3 +1,10 @@
+/**
+	Title: The "ColourScheme" class
+	Date Written: November 2015
+	Author: Samuel Dindyal, Balin Banh, Danel Tran
+	Description: An object representing a colour scheme holding a background and foreground with the ability to apply itself to JComponents and JFrames.
+*/
+
 import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsDevice;
 import java.awt.Color;

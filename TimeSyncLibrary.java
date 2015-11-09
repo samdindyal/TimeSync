@@ -1,3 +1,10 @@
+/**
+	Title: The "TimeSyncLibrary" class
+	Date Written: November 2015
+	Author: Samuel Dindyal, Balin Banh, Danel Tran
+	Description: Common variables needed by all of TimeSync.
+*/
+
 import java.awt.Color;
 import java.awt.Font;
 

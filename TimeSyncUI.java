@@ -1,3 +1,10 @@
+/**
+	Title: The "TimeSyncUI" class
+	Date Written: November 2015
+	Author: Samuel Dindyal, Balin Banh, Danel Tran
+	Description: A graphical user interface for the client side of TimeSync.
+*/
+
 import java.util.Calendar;
 
 import java.awt.GraphicsEnvironment;

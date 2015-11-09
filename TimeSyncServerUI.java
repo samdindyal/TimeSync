@@ -1,3 +1,10 @@
+/**
+	Title: The "TimeSyncServerUI" class
+	Date Written: November 2015
+	Author: Samuel Dindyal, Balin Banh, Danel Tran
+	Description: A graphical user interface for the server side of TimeSync.
+*/
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
