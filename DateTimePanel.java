@@ -28,7 +28,7 @@ public class DateTimePanel extends JPanel implements ActionListener {
 
 	private Timer timer;
 
-	public DateTimePanel(String dateString, String timeString, int size)
+	public DateTimePanel(String dateString, String timeString, int size, ColourScheme colourScheme)
 	{
 		setLayout(new GridBagLayout());
 		setOpaque(false);
@@ -70,7 +70,7 @@ public class DateTimePanel extends JPanel implements ActionListener {
 			timeFields[i].setHorizontalAlignment(JTextField.CENTER);
 			timeFields[i].setFont(timeFont);
 			timeFields[i].setEditable(false);
-			TimeSyncLibrary.GREENACCENT_COLOURSCHEME.apply(timeFields[i], false);
+			colourScheme.apply(timeFields[i], false);
 
 			constraints.gridx++;
 
@@ -82,20 +82,20 @@ public class DateTimePanel extends JPanel implements ActionListener {
 				timeSeparators[i] = new JLabel(":", SwingConstants.CENTER);
 				timeSeparators[i].setFont(timeFont);
 
-				TimeSyncLibrary.GREENACCENT_COLOURSCHEME.apply(timeSeparators[i], false);
+				colourScheme.apply(timeSeparators[i], false);
 				constraints.gridx++;
 				add(timeSeparators[i], constraints);
 			}
 		}
 
 		constraints.gridx++;
-		TimeSyncLibrary.GREENACCENT_COLOURSCHEME.apply(am_pm, false);
+		colourScheme.apply(am_pm, false);
 		am_pm.setEditable(false);
 		am_pm.setFocusable(false);
 		am_pm.setFont(alt_timeFont);
 		add(am_pm, constraints);
 
-		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(dateLabel, false);
+		colourScheme.apply(dateLabel, false);
 
 		dateLabel.setText(date);
 		dateLabel.setFont(dateFont_small);

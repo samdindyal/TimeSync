@@ -69,7 +69,7 @@ public class TimeSyncUI implements MouseListener, ActionListener, KeyEventDispat
 		frame.setResizable(false);
 		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(frame);
 
-		dateTimePanel = new DateTimePanel(runtime.getDate(), runtime.getTime(), 32);
+		dateTimePanel = new DateTimePanel(runtime.getDate(), runtime.getTime(), 32, TimeSyncLibrary.GREENACCENT_COLOURSCHEME);
 
 		title = new JLabel("TimeSync");
 		TimeSyncLibrary.DEFAULT_COLOURSCHEME.apply(title, false);

@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class TimeSyncServerRuntime {
 
 	private String clientInput;
@@ -22,23 +25,30 @@ public class TimeSyncServerRuntime {
 	private DataOutputStream outputStream;
 	private BufferedReader inputReader;
 	private Thread syncThread;
+	private ActionListener listener;
 
 
-	public TimeSyncServerRuntime()
+	public TimeSyncServerRuntime(ActionListener listener)
 	{
 		clientInput = "";
 		calendar = new GregorianCalendar();
+		this.listener = listener;
+		listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "", System.currentTimeMillis(), 0));
+	}
+
+	public void openConnection() {
 
 		try{
 			serverSocket = new ServerSocket(TimeSyncLibrary.TCP_SERVER_SOCKET);	
 		}catch (Exception e){e .printStackTrace();}
-		
+
 		while(true)
 		{
 			(syncThread = new Thread(new Runnable(){
 				@Override
 				public void run()
 				{
+					listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "", System.currentTimeMillis(), 0));
 					start();
 				}
 			})).start();
@@ -47,10 +57,8 @@ public class TimeSyncServerRuntime {
 				syncThread.join();
 			}catch (Exception e){
 				e.printStackTrace();
-			}
-			
+			}	
 		}
-			
 	}
 
 	private void listen()
@@ -119,5 +127,10 @@ public class TimeSyncServerRuntime {
 		return calendar.get(Calendar.MONTH) + "/"
 		+ calendar.get(Calendar.DAY_OF_MONTH) + "/"
 		+ calendar.get(Calendar.YEAR);
+	}
+
+	public void addActionListener(ActionListener listener)
+	{
+		this.listener = listener;
 	}
 }
