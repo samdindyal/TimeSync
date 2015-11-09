@@ -31,7 +31,7 @@ public class TimeSyncServerUI implements MouseListener, ActionListener{
 
 	public TimeSyncServerUI(String titlebarText)
 	{
-		frame = new JFrame();
+		frame = new JFrame(titlebarText);
 		frame.setLayout(new GridBagLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

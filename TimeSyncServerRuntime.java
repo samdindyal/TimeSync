@@ -92,7 +92,7 @@ public class TimeSyncServerRuntime {
 				}catch(Exception e)
 				{
 					e.printStackTrace();
-				};		
+				}	
 	}
 
 	private void respond(String str)
