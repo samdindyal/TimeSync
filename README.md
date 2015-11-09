@@ -1,49 +1,19 @@
-<style>
-	@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800);
-	.TimeSyncLogo {
-		font-family: "Open Sans";
-		font-weight: 300;
-	}
-	
-	h1.TimeSyncLogo {
-		font-size: 600%;
-		text-align: center;
-	}
-	.authors {
-		text-align: center;
-		font-family: "Open Sans";
-		font-weight: 300;
-		margin-top: -20px;
-	}
-	div.screenshots {
-		text-align: center;
-	}
-	img.screenshot {
-		width: 45%;
-		min-width: 350px;
-		display: inline;
-		margin: -10px;
-	}
-	
-	code.language-java {
-		width: 50%;
-	}
-</style>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 
-<h1 class="TimeSyncLogo">TimeSync</h1>
+<h1 class="TimeSyncLogo" style="font-family:Open Sans;font-weight:300;font-size:600%;text-align:center">TimeSync</h1>
 
-<p class="authors">Sam Dindyal | Balin Banh | Daniel Tran</p>
+<p class="authors" style="text-align:center;font-family:Open Sans;font-weight:300;margin-top:-20px;">Sam Dindyal | Balin Banh | Daniel Tran</p>
 <br>
 
-<div class="screenshots">
-	<img class="screenshot" src="res/timesyncclient.png"></img>
-	<img class="screenshot"src="res/timesyncserver.png"></img>
+<div class="screenshots" style="text-align: center;">
+	<img class="screenshot" src="res/timesyncclient.png" style="width:40%;min-width:350px;display:inline;margin:-10px;"></img>
+	<img class="screenshot"src="res/timesyncserver.png" style="width:40%;min-width:350px;display:inline;margin:-10px;"></img>
 </div>
 
-<span class="TimeSyncLogo">TimeSync</span> is a simple Java application, written with the <code>javax.swing</code> package and as an assignment for Computer Networks I *(CPS706)*. It is composed of two parts, a client side and a server side; both of which feature their own user interface. The client and server communicate through the TCP protocol can selectively sync time and/or date, which is determined on the server side application.
+<span class="TimeSyncLogo" style="font-family:Open Sans;font-weight:300;">TimeSync</span> is a simple Java application, written with the <code>javax.swing</code> package and as an assignment for Computer Networks I *(CPS706)*. It is composed of two parts, a client side and a server side; both of which feature their own user interface. The client and server communicate through the TCP protocol can selectively sync time and/or date, which is determined on the server side application.
 
-In order to run <span class="TimeSyncLogo">TimeSync</span>, run <code>TimeSyncServer</code> first, and, with that running, run <code>TimeSyncClient</code>.<br><br>
-***Please note that*** <span class="TimeSyncLogo">TimeSync</span> ***requires JRE 8 or newer.***
+In order to run <span class="TimeSyncLogo" style="font-family:Open Sans;font-weight:300;">TimeSync</span>, run <code>TimeSyncServer</code> first, and, with that running, run <code>TimeSyncClient</code>.<br><br>
+***Please note that*** <span class="TimeSyncLogo" style="font-family:Open Sans;font-weight:300;">TimeSync</span> ***requires JRE 8 or newer.***
 
 --
 <br>
