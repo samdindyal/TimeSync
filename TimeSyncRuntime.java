@@ -44,6 +44,7 @@ public class TimeSyncRuntime
 				System.out.println("REQUESTING: "  + str);
 				outputToServer.writeBytes(str);
 				clientSocket.close();
+				// System.out.println(str);
 			}catch(Exception e){e.printStackTrace();}
 
 			connect();
