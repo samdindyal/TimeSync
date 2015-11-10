@@ -89,4 +89,3 @@ private void connect ()
 ```
 
 *The code in the snippet above is responsible for opening a socket for the client to send a request.*
-
